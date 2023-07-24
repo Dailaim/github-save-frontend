@@ -1,6 +1,6 @@
 import { Card } from "../components/card";
 import { usePeopleState } from "../context/peopleListContext";
-import { useSaveOrDeletePerson } from "../hooks/SaveOrDeletePerson";
+import { useSaveOrDeletePerson } from "../hooks/saveOrDeletePerson";
 import { useAutoSearch } from "../hooks/autoSearch";
 import { usePeopleList } from "../hooks/peopleList";
 
