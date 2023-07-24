@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const useAutoSearch = (
-	callback: (val: string) => void,
+  callback: () => void,
+	value = "",
 	active = true,
-	initialValue = "",
 	delay = 300,
 ) => {
-	const [searchBounced, setSearchBounced] = useState(initialValue);
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			if (searchBounced === initialValue) return;
+			if (!value) return;
 
 			if (!active) return;
 
-			callback(searchBounced);
+			callback();
 		}, delay);
 
 		return () => clearTimeout(timeout);
-	}, [active, callback, delay, initialValue, searchBounced]);
+	}, [active, callback, delay, value]);
 
-	return { searchBounced, setSearchBounced };
+	return { value };
 };
