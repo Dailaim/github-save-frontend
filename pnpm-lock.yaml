@@ -14,6 +14,9 @@ dependencies:
   swr:
     specifier: ^2.2.0
     version: 2.2.0(react@18.2.0)
+  urql:
+    specifier: ^4.0.5
+    version: 4.0.5(react@18.2.0)
   wouter:
     specifier: ^2.11.0
     version: 2.11.0(react@18.2.0)
@@ -66,6 +69,15 @@ devDependencies:
     version: 4.4.5
 
 packages:
+
+  /@0no-co/graphql.web@1.0.4:
+    resolution: {integrity: sha512-W3ezhHGfO0MS1PtGloaTpg0PbaT8aZSmmaerL7idtU5F7oCI+uu25k+MsMS31BVFlp4aMkHSrNRxiD72IlK8TA==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+    dev: false
 
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
@@ -710,6 +722,15 @@ packages:
       '@typescript-eslint/types': 6.0.0
       eslint-visitor-keys: 3.4.1
     dev: true
+
+  /@urql/core@4.1.0:
+    resolution: {integrity: sha512-mQLO6RAOhITvq6oktFzsEuAngdVwJbTuS+XaZi6evUQu797MXhI0smldEkWg9osvn/I2dyO57oR3LpxpMr9nTg==}
+    dependencies:
+      '@0no-co/graphql.web': 1.0.4
+      wonka: 6.3.3
+    transitivePeerDependencies:
+      - graphql
+    dev: false
 
   /@vitejs/plugin-react-swc@3.3.2(vite@4.4.5):
     resolution: {integrity: sha512-VJFWY5sfoZerQRvJrh518h3AcQt6f/yTuWn4/TRB+dqmYU0NX1qz7qM5Wfd+gOQqUzQW4gxKqKN3KpE/P3+zrA==}
@@ -1909,6 +1930,18 @@ packages:
       punycode: 2.3.0
     dev: true
 
+  /urql@4.0.5(react@18.2.0):
+    resolution: {integrity: sha512-VicPBQXWicSbE+0oPzU2HMyDa//76FmwyQ7LayaYQxX97nhvMLs2ZWQdUmEzQQqvmw4YFaI0wPz1Qisp+PrZIQ==}
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      '@urql/core': 4.1.0
+      react: 18.2.0
+      wonka: 6.3.3
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
   /use-sync-external-store@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
     peerDependencies:
@@ -1963,6 +1996,10 @@ packages:
     dependencies:
       isexe: 2.0.0
     dev: true
+
+  /wonka@6.3.3:
+    resolution: {integrity: sha512-id4wYGsT6aEc8/3+by7NTHvTe0DwsOjv7vah0K0+AorV1MHKuS3OQ2g8DGsem1OEXrNShbVLPsg4kG2O6GZ2SQ==}
+    dev: false
 
   /wouter@2.11.0(react@18.2.0):
     resolution: {integrity: sha512-Y2CzNCwIN8kHjR2Q10D+UAgQND6TvBNmwXxgYw5ltXjjTlL7cLDUDpCip3a927Svxrmxr6vJMcPUysFxSvriCw==}
