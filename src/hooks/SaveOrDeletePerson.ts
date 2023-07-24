@@ -1,11 +1,8 @@
-import { usePeopleState } from "../context/peopleListContext";
 import { person } from "../types/person";
 import { useDeletePerson } from "./deleteUser";
 import { useSavePerson } from "./saveUser";
 
-export const useSaveOrDeletePerson = () => {
-	const { peopleSave } = usePeopleState();
-
+export const useSaveOrDeletePerson = (peopleSave: (index: number) => void) => {
 	const savePerson = useSavePerson(true);
 
 	const deletePerson = useDeletePerson();
