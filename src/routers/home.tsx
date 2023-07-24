@@ -1,23 +1,16 @@
 import { Card } from "../components/card";
 import { usePeopleState } from "../context/peopleListContext";
+import { useSaveOrDeletePerson } from "../hooks/SaveOrDeletePerson";
 import { useAutoSearch } from "../hooks/autoSearch";
-import { useDeletePerson } from "../hooks/deleteUser";
 import { usePeopleList } from "../hooks/peopleList";
-import { useSavePerson } from "../hooks/saveUser";
-import { person } from "../types/person";
+
 
 export function Home() {
+
 	const { isError, isLoading, reexecute } = usePeopleList();
 
-	const {
-		setPeople,
-		setSearch,
-		people,
-		autoSearch,
-		setAutoSearch,
-		search,
-		peopleSave,
-	} = usePeopleState();
+	const { setPeople, setSearch, people, autoSearch, setAutoSearch, search } =
+		usePeopleState();
 
 	useAutoSearch(reexecute, search, autoSearch, 500);
 
@@ -26,33 +19,7 @@ export function Home() {
 		reexecute();
 	};
 
-	const savePerson = useSavePerson(true);
-
-	const deletePerson = useDeletePerson();
-
-	const handleSave = async (login: string) => {
-		await savePerson({ search: { login } });
-
-	};
-
-	const handleDelete = async (githubID: number) => {
-		await deletePerson({
-			githubID,
-		});
-
-
-	};
-
-	const onSave = (user: person, index: number) => {
-
-		if (!user.save) {
-
-			handleSave(user.login);
-		} else {
-			handleDelete(user?.githubID);
-		}
-		peopleSave(index);
-	};
+	const { onSave } = useSaveOrDeletePerson();
 
 	return (
 		<>
@@ -111,15 +78,6 @@ export function Home() {
 					Search
 				</button>
 			</form>
-
-			{/* 			<div className="flex flex-col justify-center items-center">
-				<h1 className="text-2xl first-line:font-bold text-black dark:text-white">
-					Github Users
-				</h1>
-				<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-					Results: {count}
-				</h2>
-			</div> */}
 
 			{isError && (
 				<div className="flex flex-col justify-center items-center">
