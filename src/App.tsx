@@ -1,4 +1,4 @@
-import { Route } from "wouter";
+import { Link, Route } from "wouter";
 import { Home } from "./routers/home";
 import { User } from "./routers/user";
 
@@ -6,7 +6,7 @@ import { Client, Provider, cacheExchange, fetchExchange } from "urql";
 import { Save } from "./routers/save";
 
 const client = new Client({
-	url: "http://localhost:8080/graphql",
+	url: import.meta.env.VITE_BACK_URL ?? "http://localhost:8080/graphql",
 	exchanges: [cacheExchange, fetchExchange],
 });
 
@@ -15,7 +15,21 @@ function App() {
 		<>
 			<Provider value={client}>
 				<div>
-					{/* <Link href="/users/1">Profile</Link> */}
+					<div className="flex justify-around w-full">
+						<Link
+							href="/"
+							className="flex-1 text-center text-lg text-white hover:text-yellow-500 transition-colors duration-300"
+						>
+							Home
+						</Link>
+						<Link
+							href="/save"
+							className="flex-1 text-center text-lg text-white hover:text-yellow-500 transition-colors duration-300"
+						>
+							Save
+						</Link>
+					</div>
+
 					<Route path="/" component={Home} />
 
 					<Route path="/users/:name">
