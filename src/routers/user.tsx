@@ -1,44 +1,52 @@
 import { FC } from "react";
-import useSWR from "swr";
+import { gql, useQuery } from "urql";
+import { person } from "../types/person";
 
-type UserData = {
-	login: string;
-	id: number;
-	avatar_url: string;
-	url: string;
-	html_url: string;
-	name: string;
-	company?: string;
-	blog?: string;
-	location?: string;
-	email?: string;
-	twitter_username?: string;
-	public_repos: number;
-	public_gists: number;
-	followers: number;
-	following: number;
-	created_at: string;
-	updated_at: string;
+const peopleQuery = gql`
+query GetUser($username: String!) {
+
+  getUser(username: $username) {
+    name
+    avatarUrl
+    githubID
+    apiUrl
+    htmlUrl
+    location
+    publicRepos
+    followers
+    following
+    login
+}
+}`;
+
+const useFetcherPerson = (name: string) => {
+	const [result] = useQuery({
+		query: peopleQuery,
+		variables: {
+			username: name,
+		},
+	});
+
+	return {
+		person: result?.data?.getUser  as person,
+		error: result.error,
+		loading: result.fetching,
+	};
 };
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 type UserProps = { name: string };
 
 export const User: FC<UserProps> = ({ name }) => {
-	const { data: user, error } = useSWR<UserData, unknown>(
-		`https://api.github.com/users/${name}`,
-		fetcher,
-	);
+	const { person: user, error, loading } = useFetcherPerson(name);
 
-	if (error) return <div>Failed to load user</div>;
-	if (!user) return <div>Loading...</div>;
+	if (error) return <div className="text-red-500">Failed to load user</div>;
+	if (!user && loading) return <div className="text-blue-500">Loading...</div>;
 
 	return (
 		<div className="flex flex-col items-center p-8 space-y-6">
 			<img
 				className="w-32 h-32 rounded-full"
-				src={user.avatar_url}
+				src={user.avatarUrl}
 				alt={user.name}
 			/>
 			<h3 className="text-lg font-semibold dark:text-gray-100">{user.name}</h3>
@@ -46,18 +54,18 @@ export const User: FC<UserProps> = ({ name }) => {
 				{user.login}
 			</span>
 			<p className="text-gray-600 dark:text-gray-300">
-				Company: {user.company || "N/A"}
+				Followers: {user.followers || "N/A"}
 			</p>
 
 			<p className="text-gray-600 dark:text-gray-300">
 				Location: {user.location || "N/A"}
 			</p>
 			<p className="text-gray-600 dark:text-gray-300">
-				Public repos: {user.public_repos}
+				Public repos: {user.location}
 			</p>
 			<div className="flex space-x-4 w-full">
 				<a
-					href={user.html_url}
+					href={user.htmlUrl}
 					className="w-full py-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
 				>
 					Github
