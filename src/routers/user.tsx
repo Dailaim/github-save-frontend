@@ -26,6 +26,7 @@ const useFetcherPerson = (name: string) => {
 		variables: {
 			username: name,
 		},
+		requestPolicy: "network-only",
 	});
 
 	return {
@@ -54,7 +55,7 @@ export const User: FC<UserProps> = ({ name }) => {
 	if (!user && loading) return <div className="text-blue-500">Loading...</div>;
 
 	return (
-		<div className="flex flex-col items-center p-8 space-y-6">
+		<div className="flex flex-col items-center p-8 space-y-6  max-w-2xl place-content-center mx-auto my-10">
 			<img
 				className="w-32 h-32 rounded-full"
 				src={user.avatarUrl}
@@ -72,19 +73,19 @@ export const User: FC<UserProps> = ({ name }) => {
 				Location: {user.location || "N/A"}
 			</p>
 			<p className="text-gray-600 dark:text-gray-300">
-				Public repos: {user.location}
+				Public repos: {user.location ?? 0}
 			</p>
 			<div className="flex space-x-4 w-full">
 				<a
 					href={user.htmlUrl}
-					className="w-full py-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
+					className="w-full p-2  text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
 				>
 					Github
 				</a>
 				<button
 					onClick={handleClick}
 					type="button"
-					className="w-full py-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
+					className="w-full p-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
 				>
 					{save ? "Eliminar" : "Guardar"}
 				</button>
