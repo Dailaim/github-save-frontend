@@ -1,23 +1,20 @@
 import { useEffect } from "react";
 import { usePeopleState } from "../context/peopleListContext";
-import { useFetcherPeople } from "./fetchPeople";
+import { useFetcherPeople2 } from "./fetchPeople";
 
 export function usePeopleList() {
-	const { setPeople, setCount, search } = usePeopleState();
+	const { setPeople,  search } = usePeopleState();
 
-	const { people, error, isLoading, count } = useFetcherPeople(search);
+	const { people, error, isLoading, reexecute } = useFetcherPeople2(search);
 
 	useEffect(() => {
-		if (people && count) {
+		if (people) {
 			setPeople(people);
-			setCount(count);
-		} else {
-			setPeople([]);
-			setCount(0);
 		}
-	}, [count, people, setCount, setPeople]);
+	}, [ people, setPeople]);
 
 	return {
+    reexecute,
 		isLoading: isLoading,
 		isError: error && !people,
 	};
