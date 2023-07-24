@@ -11,6 +11,7 @@ interface Actions {
 	setSearch: (val: string) => void;
 	setPeople: (val: person[]) => void;
 	setAutoSearch: (val: boolean) => void;
+	peopleSave: (index: number) => void;
 }
 
 const initialState = {
@@ -27,4 +28,12 @@ export const usePeopleState = create<Store & Actions>((set) => ({
 	setPeople: (val) => set({ people: val }),
 
 	setAutoSearch: (val) => set({ autoSearch: val }),
+
+	peopleSave: (index) => {
+		set((state) => {
+			const newPeople = [...state.people];
+			newPeople[index].save = !newPeople[index].save;
+			return { people: newPeople };
+		});
+	},
 }));
