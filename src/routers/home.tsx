@@ -31,30 +31,22 @@ export function Home() {
 	const deletePerson = useDeletePerson();
 
 	const handleSave = async (login: string) => {
-		const { data, error } = await savePerson({ search: { login } });
-		console.log(data);
-		if (error) {
-			console.log("{esorrsasdfafdasdf}", error);
-		}
+		await savePerson({ search: { login } });
+
 	};
 
 	const handleDelete = async (githubID: number) => {
-		const { data, error } = await deletePerson({
+		await deletePerson({
 			githubID,
 		});
 
-		console.log(data);
 
-		if (error) {
-			console.log("{esorrsasdfafdasdf}", error);
-		}
 	};
 
 	const onSave = (user: person, index: number) => {
-		console.log("🚀 ~ file: home.tsx:57 ~ onSave ~ save:", user.save);
 
 		if (!user.save) {
-			console.log("🚀 ~ file: hfasddddddddddd:", user.save);
+
 			handleSave(user.login);
 		} else {
 			handleDelete(user?.githubID);
