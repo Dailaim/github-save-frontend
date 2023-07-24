@@ -1,11 +1,12 @@
 import { gql, useQuery } from "urql";
 
 const Query = gql`
-  query GetSavedUsers( $searchUserUsername2: String!) {
+  query SearchUser( $searchUserUsername2: String!) {
   searchUser(username: $searchUserUsername2) {
     githubID
     login
     avatarUrl
+    save
   }
 }
 `;
@@ -23,9 +24,8 @@ export const useFetcherPeople2 = (name: string) => {
 
 	return {
 		people: data?.searchUser,
-		count: data?.count,
 		isLoading: fetching,
-		isError: error && !data.searchUser,
+		isError: error && !data?.searchUser,
 		error: error,
     reexecute: reexecuteQuery,
 	};
