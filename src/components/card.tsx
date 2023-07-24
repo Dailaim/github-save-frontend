@@ -11,17 +11,17 @@ export const Card: FC<{ person: person; onSave?: () => void }> = ({
 			<div className="flex flex-1 flex-col p-8">
 				<img
 					className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
-					src={person.imageUrl}
+					src={person.avatarUrl}
 					alt=""
 				/>
 				<h3 className="mt-6 text-sm font-medium text-gray-900 dark:text-gray-200">
-					{person.name}
+					{person.login}
 				</h3>
 				<dl className="mt-1 flex flex-grow flex-col justify-between">
 					<dt className="sr-only">Role</dt>
 					<dd className="mt-3">
 						<span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-500 px-2 py-1 text-xs font-medium text-green-700 dark:text-green-200 ring-1 ring-inset ring-green-600/20 dark:ring-green-400">
-							{person.id}
+							{person.githubID}
 						</span>
 					</dd>
 				</dl>
