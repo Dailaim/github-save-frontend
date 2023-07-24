@@ -1,47 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { gql, useQuery } from "urql";
-import { person } from "../types/person";
-
-const peopleQuery = gql`
-query GetUser($username: String!) {
-
-  getUser(username: $username) {
-    name
-    avatarUrl
-    githubID
-    apiUrl
-    htmlUrl
-    location
-    publicRepos
-    followers
-    following
-    login
-    save
-}
-}`;
-
-const useFetcherPerson = (name: string) => {
-	const [result] = useQuery({
-		query: peopleQuery,
-		variables: {
-			username: name,
-		},
-		requestPolicy: "network-only",
-	});
-
-	return {
-		person: result?.data?.getUser as person,
-		error: result.error,
-		loading: result.fetching,
-	};
-};
-
+import { useFetcherPerson } from "../hooks/fetcherPerson";
 type UserProps = { name: string };
 
 export const User: FC<UserProps> = ({ name }) => {
 	const { person: user, error, loading } = useFetcherPerson(name);
 
-	const [save, setSave] = useState(user?.save ?? false);
+	const [save, setSave] = useState<boolean>(user?.save ?? false);
 
 	useEffect(() => {
 		setSave(user?.save ?? false);
