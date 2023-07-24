@@ -4,34 +4,34 @@ import { useAutoSearch } from "../hooks/autoSearch";
 import { usePeopleList } from "../hooks/peopleList";
 
 export function Home() {
-	const { isError, isLoading } = usePeopleList();
+	const { isError, isLoading, reexecute } = usePeopleList();
 
 	const {
 		setPeople,
 		setSearch,
 		people,
-		count,
 		autoSearch,
 		setAutoSearch,
 		search,
 	} = usePeopleState();
 
-	const { searchBounced, setSearchBounced } = useAutoSearch(
-		setSearch,
-		autoSearch,
+	useAutoSearch(
+		reexecute,
 		search,
+		autoSearch,
+		500,
 	);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setSearch(searchBounced);
+		reexecute();
 	};
 
 	return (
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className="flex flex-col justify-center items-center bg-white dark:bg-gray-800 p-4 rounded-md"
+				className="flex flex-col justify-center items-center bg-white dark:bg-gray-800 p-4 rounded-md my-5"
 			>
 				<label
 					className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
@@ -43,19 +43,19 @@ export function Home() {
 					type="text"
 					id="search"
 					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:text-white dark:bg-gray-800 dark:border-gray-600"
-					value={searchBounced}
+					value={search}
 					onChange={(e) => {
 						if (e.target.value === "" && autoSearch) {
 							setPeople([]);
-							setSearchBounced("");
+							setSearch("");
 							return;
 						}
 						if (e.target.value === " " && autoSearch) {
-							setSearchBounced("");
+							setSearch("");
 							setPeople([]);
 							return;
 						}
-						setSearchBounced(e.target.value);
+						setSearch(e.target.value);
 					}}
 					placeholder="Search"
 				/>
@@ -85,14 +85,14 @@ export function Home() {
 				</button>
 			</form>
 
-			<div className="flex flex-col justify-center items-center">
+{/* 			<div className="flex flex-col justify-center items-center">
 				<h1 className="text-2xl first-line:font-bold text-black dark:text-white">
 					Github Users
 				</h1>
 				<h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
 					Results: {count}
 				</h2>
-			</div>
+			</div> */}
 
 			{isError && (
 				<div className="flex flex-col justify-center items-center">
@@ -117,7 +117,7 @@ export function Home() {
 				>
 					{people.map((person) => (
 						<li
-							key={person.id}
+							key={person.githubID}
 							className="col-span-1 flex flex-col divide-y divide-gray-200 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 text-center shadow"
 						>
 							<Card person={person} />
