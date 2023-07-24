@@ -1,7 +1,10 @@
 import { Card } from "../components/card";
 import { usePeopleState } from "../context/peopleListContext";
 import { useAutoSearch } from "../hooks/autoSearch";
+import { useDeletePerson } from "../hooks/deleteUser";
 import { usePeopleList } from "../hooks/peopleList";
+import { useSavePerson } from "../hooks/saveUser";
+import { person } from "../types/person";
 
 export function Home() {
 	const { isError, isLoading, reexecute } = usePeopleList();
@@ -13,18 +16,50 @@ export function Home() {
 		autoSearch,
 		setAutoSearch,
 		search,
+		peopleSave,
 	} = usePeopleState();
 
-	useAutoSearch(
-		reexecute,
-		search,
-		autoSearch,
-		500,
-	);
+	useAutoSearch(reexecute, search, autoSearch, 500);
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		reexecute();
+	};
+
+	const savePerson = useSavePerson(true);
+
+	const deletePerson = useDeletePerson();
+
+	const handleSave = async (login: string) => {
+		const { data, error } = await savePerson({ search: { login } });
+		console.log(data);
+		if (error) {
+			console.log("{esorrsasdfafdasdf}", error);
+		}
+	};
+
+	const handleDelete = async (githubID: number) => {
+		const { data, error } = await deletePerson({
+			githubID,
+		});
+
+		console.log(data);
+
+		if (error) {
+			console.log("{esorrsasdfafdasdf}", error);
+		}
+	};
+
+	const onSave = (user: person, index: number) => {
+		console.log("🚀 ~ file: home.tsx:57 ~ onSave ~ save:", user.save);
+
+		if (!user.save) {
+			console.log("🚀 ~ file: hfasddddddddddd:", user.save);
+			handleSave(user.login);
+		} else {
+			handleDelete(user?.githubID);
+		}
+		peopleSave(index);
 	};
 
 	return (
@@ -85,7 +120,7 @@ export function Home() {
 				</button>
 			</form>
 
-{/* 			<div className="flex flex-col justify-center items-center">
+			{/* 			<div className="flex flex-col justify-center items-center">
 				<h1 className="text-2xl first-line:font-bold text-black dark:text-white">
 					Github Users
 				</h1>
@@ -115,12 +150,17 @@ export function Home() {
 					role="list"
 					className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
 				>
-					{people.map((person) => (
+					{people.map((person, index) => (
 						<li
 							key={person.githubID}
 							className="col-span-1 flex flex-col divide-y divide-gray-200 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 text-center shadow"
 						>
-							<Card person={person} />
+							<Card
+								person={person}
+								onSave={() => {
+									onSave(person, index);
+								}}
+							/>
 						</li>
 					))}
 				</ul>
