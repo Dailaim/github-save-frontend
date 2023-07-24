@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { gql, useQuery } from "urql";
 import { person } from "../types/person";
 
@@ -16,6 +16,7 @@ query GetUser($username: String!) {
     followers
     following
     login
+    save
 }
 }`;
 
@@ -28,7 +29,7 @@ const useFetcherPerson = (name: string) => {
 	});
 
 	return {
-		person: result?.data?.getUser  as person,
+		person: result?.data?.getUser as person,
 		error: result.error,
 		loading: result.fetching,
 	};
@@ -38,6 +39,16 @@ type UserProps = { name: string };
 
 export const User: FC<UserProps> = ({ name }) => {
 	const { person: user, error, loading } = useFetcherPerson(name);
+
+	const [save, setSave] = useState(user?.save ?? false);
+
+	useEffect(() => {
+		setSave(user?.save ?? false);
+	}, [user?.save]);
+
+	const handleClick = () => {
+		setSave((save) => !save);
+	};
 
 	if (error) return <div className="text-red-500">Failed to load user</div>;
 	if (!user && loading) return <div className="text-blue-500">Loading...</div>;
@@ -71,10 +82,11 @@ export const User: FC<UserProps> = ({ name }) => {
 					Github
 				</a>
 				<button
+					onClick={handleClick}
 					type="button"
 					className="w-full py-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
 				>
-					Guardar
+					{save ? "Eliminar" : "Guardar"}
 				</button>
 			</div>
 		</div>
