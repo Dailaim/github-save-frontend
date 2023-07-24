@@ -1,7 +1,14 @@
 export type person = {
-	name: string;
-	id: string;
-	imageUrl: string;
-	urlApi: string;
-	urlHtml: string;
+  id?: number;
+  login: string;
+  githubID: number;
+  avatarUrl: string;
+  apiUrl: string;
+  htmlUrl: string;
+  name: string;
+  location?: string;
+  publicRepos?: number;
+  followers?: number;
+  following?: number;
 };
+
