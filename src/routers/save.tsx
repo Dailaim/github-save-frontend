@@ -2,14 +2,10 @@ import { useEffect } from "react";
 import { Card } from "../components/card";
 import { useSavePeopleState } from "../context/savePeopleListContext copy";
 
-import { useDeletePerson } from "../hooks/deleteUser";
-
 import { useFetcherSavePeople } from "../hooks/peopleSaveList";
-import { useSavePerson } from "../hooks/saveUser";
-import { person } from "../types/person";
+import { useSaveOrDeletePerson } from "../hooks/saveOrDeletePerson";
 
 export function Save() {
-
 	const { peopleSave, setPeople, people } = useSavePeopleState();
 
 	const { isError, isLoading, people: users } = useFetcherSavePeople();
@@ -20,34 +16,8 @@ export function Save() {
 		}
 	}, [setPeople, users]);
 
-	const savePerson = useSavePerson(true);
-
-	const deletePerson = useDeletePerson();
-
-	const handleSave = async (login: string) => {
-		await savePerson({ search: { login } });
-
-	};
-
-	const handleDelete = async (githubID: number) => {
-		await deletePerson({
-			githubID,
-		});
-
-	};
-
-	const onSave = (user: person, index: number) => {
-
-
-		if (!user.save) {
-
-			handleSave(user.login);
-		} else {
-			handleDelete(user?.githubID);
-		}
-		peopleSave(index);
-	};
-
+	const { onSave } = useSaveOrDeletePerson(peopleSave);
+  
 	return (
 		<>
 			{isError && (

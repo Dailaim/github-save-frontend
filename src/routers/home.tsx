@@ -1,16 +1,21 @@
 import { Card } from "../components/card";
 import { usePeopleState } from "../context/peopleListContext";
-import { useSaveOrDeletePerson } from "../hooks/saveOrDeletePerson";
 import { useAutoSearch } from "../hooks/autoSearch";
 import { usePeopleList } from "../hooks/peopleList";
-
+import { useSaveOrDeletePerson } from "../hooks/saveOrDeletePerson";
 
 export function Home() {
-
 	const { isError, isLoading, reexecute } = usePeopleList();
 
-	const { setPeople, setSearch, people, autoSearch, setAutoSearch, search } =
-		usePeopleState();
+	const {
+		setPeople,
+		setSearch,
+		people,
+		autoSearch,
+		setAutoSearch,
+		search,
+		peopleSave,
+	} = usePeopleState();
 
 	useAutoSearch(reexecute, search, autoSearch, 500);
 
@@ -19,7 +24,7 @@ export function Home() {
 		reexecute();
 	};
 
-	const { onSave } = useSaveOrDeletePerson();
+	const { onSave } = useSaveOrDeletePerson(peopleSave);
 
 	return (
 		<>
