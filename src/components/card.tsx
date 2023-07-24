@@ -36,11 +36,15 @@ export const Card: FC<{ person: person; onSave?: () => void }> = ({
 							Ver perfil
 						</Link>
 					</div>
-					<div className="-ml-px flex w-0 flex-1" onClick={onSave}>
+					<button
+						type="button"
+						className="-ml-px flex w-0 flex-1"
+						onClick={onSave}
+					>
 						<span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-200">
-							Guardar
+							{!person.save ? "Guardar" : "Eliminar"}
 						</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</>
