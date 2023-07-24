@@ -1,13 +1,47 @@
-import useSWR from "swr";
+import { gql, useQuery } from "urql";
 
-type peopleResponse = {
-	login: string;
-	id: number;
-	avatar_url: string;
-	url: string;
-	html_url: string;
+const Query = gql`
+  query GetSavedUsers( $searchUserUsername2: String!) {
+  searchUser(username: $searchUserUsername2) {
+    githubID
+    login
+    avatarUrl
+  }
+}
+`;
+
+export const useFetcherPeople2 = (name: string) => {
+	const [result, reexecuteQuery] = useQuery({
+		query: Query,
+		variables: {
+			searchUserUsername2: name,
+		},
+		pause: true,
+	});
+
+	const { data, error, fetching } = result;
+
+	return {
+		people: data?.searchUser,
+		count: data?.count,
+		isLoading: fetching,
+		isError: error && !data.searchUser,
+		error: error,
+    reexecute: reexecuteQuery,
+	};
 };
 
+
+/* type peopleResponse = {
+	githubID: number;
+	login: string;
+	avatarUrl: string;
+	apiUrl: string;
+	htmlUrl: string;
+}; */
+
+
+/* 
 const fetcher = async (name: string) => {
 	const response = await fetch(
 		`https://api.github.com/search/users?q=${name}+in:login&page=1&per_page=10`,
@@ -21,11 +55,11 @@ const fetcher = async (name: string) => {
 
 	const peopleData = data.items.map((personResponse: peopleResponse) => {
 		return {
-			id: personResponse.id,
-			name: personResponse.login,
-			imageUrl: personResponse.avatar_url,
-			urlApi: personResponse.url,
-			urlHtml: personResponse.html_url,
+			githubID: personResponse.githubID,
+			login: personResponse.login,
+			avatarUrl: personResponse.avatarUrl,
+			apiUrl: personResponse.apiUrl,
+			htmlUrl: personResponse.htmlUrl,
 		};
 	});
 
@@ -43,3 +77,4 @@ export const useFetcherPeople = (name: string) => {
 		error: error,
 	};
 };
+ */
