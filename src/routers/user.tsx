@@ -23,11 +23,11 @@ type UserData = {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-type UserProps = { id: string };
+type UserProps = { name: string };
 
-export const User: FC<UserProps> = ({ id }) => {
+export const User: FC<UserProps> = ({ name }) => {
 	const { data: user, error } = useSWR<UserData, unknown>(
-		`https://api.github.com/users/${id}`,
+		`https://api.github.com/users/${name}`,
 		fetcher,
 	);
 
@@ -60,7 +60,7 @@ export const User: FC<UserProps> = ({ id }) => {
 					href={user.html_url}
 					className="w-full py-2 text-center font-semibold text-white rounded-lg shadow-md hover:bg-gray-700 bg-gray-800"
 				>
-					Ver en Github
+					Github
 				</a>
 				<button
 					type="button"
